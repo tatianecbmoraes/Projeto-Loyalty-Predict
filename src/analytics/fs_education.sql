@@ -5,7 +5,7 @@ SELECT idUsuario,
         count(descSlugCursoEpisodio) as qtdeEps
 
 FROM cursos_episodios_completos
-WHERE dtCriacao < '2025-09-01'
+WHERE dtCriacao < '2025-10-01'
 GROUP BY idUsuario, descSlugCurso
 ),
 
@@ -74,6 +74,7 @@ SELECT
         max(dtRecompensa) AS dtCriacao
 
 FROM recompensas_usuarios
+WHERE dtRecompensa < '2025-10-01'
 GROUP BY idUsuario
 
 UNION ALL
@@ -83,6 +84,7 @@ SELECT
         max(dtCriacao)  AS dtCriacao
 
 FROM habilidades_usuarios
+WHERE dtCriacao < '2025-10-01'
 GROUP BY idUsuario
 
 UNION ALL
@@ -92,6 +94,7 @@ SELECT
         max(dtCriacao) AS dtCriacao
 
 FROM cursos_episodios_completos
+WHERE dtCriacao < '2025-10-01'
 GROUP BY idUsuario
 ),
 
@@ -103,8 +106,10 @@ SELECT idUsuario,
 FROM tb_atividade
 
 GROUP BY idUsuario
-)
+),
 
+tb_join AS (
+ 
 SELECT t3.idTMWCliente AS idCliente,
         t1.carreira,
         t1.coletadados2024,
@@ -140,3 +145,9 @@ ON t1.idUsuario = t2.idUsuario
 
 INNER JOIN usuarios_tmw AS t3
 ON t1.idUsuario = t3.idUsuario
+
+)
+
+SELECT '2025-10-01' AS dtRef, 
+        *
+FROM tb_join

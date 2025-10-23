@@ -11,8 +11,8 @@ WHERE DtCriacao < '2025-10-01'
 tb_agg_transacao AS (
 SELECT idCliente,
 
-        max(julianday('2025-10-01') - julianday (DtCriacao)) AS idadeDias,
-        
+        max(julianday(date('2025-10-01', '-1 day')) - julianday (DtCriacao)) AS idadeDias,
+
         count(DISTINCT dtDia) AS qtdeAtivacaoVida,
         count(DISTINCT CASE WHEN dtDia > date ('2025-10-01', '-7 day') THEN dtDia END) AS qtdeAtivacaoD7,
         count(DISTINCT CASE WHEN dtDia > date ('2025-10-01', '-14 day') THEN dtDia END) AS qtdeAtivacaoD14,
@@ -176,5 +176,6 @@ SELECT t1.*,
 
 )
 
-SELECT * 
+SELECT date('2025-10-01', '-1 day') AS dtRef,
+        *
 FROM tb_join
