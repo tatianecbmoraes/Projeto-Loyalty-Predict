@@ -13,13 +13,13 @@ WITH tb_daily AS (
         substr(DtCriacao,0,11) AS dtDia
 
     FROM transacoes
-    WHERE DtCriacao < '2025-09-30'
+    WHERE DtCriacao < '2025-09-01'
 ),
 
 tb_idade AS (
     SELECT IdCliente,
-           cast(max(julianday('2025-09-30') - julianday(dtDia)) as int) AS qtdeDiasPrimTransacao,
-           cast(min(julianday('2025-09-30') - julianday(dtDia)) as int) AS qtdeDiasUltTransacao
+           cast(max(julianday('2025-09-01') - julianday(dtDia)) as int) AS qtdeDiasPrimTransacao,
+           cast(min(julianday('2025-09-01') - julianday(dtDia)) as int) AS qtdeDiasUltTransacao
     FROM tb_daily
     GROUP BY IdCliente
 ),
@@ -32,7 +32,7 @@ tb_rn AS (
 
 tb_penultima_ativacao As (
     SELECT *,
-           CAST(julianday('2025-09-30') - julianday(dtDia) AS INT) AS qtdeDiasPenultimaTransacao
+           CAST(julianday('2025-09-01') - julianday(dtDia) AS INT) AS qtdeDiasPenultimaTransacao
     FROM tb_rn
     WHERE rnDia = 2
 ),
@@ -66,8 +66,8 @@ tb_freq_valor AS (
 
     FROM transacoes
 
-    WHERE DtCriacao < '2025-09-30'
-    AND DtCriacao >= date('2025-09-30', '-28 days')
+    WHERE DtCriacao < '2025-09-01'
+    AND DtCriacao >= date ('2025-09-01', '-28 days')
 
     GROUP BY idCliente
     ORDER BY qtdeFrequencia DESC
@@ -93,7 +93,7 @@ tb_cluster AS (
 
 
 SELECT 
-       date('2025-09-30', '-1 day') AS dtRef,
+       date('2025-09-01', '-1 day') AS dtRef,
        t1.*,
        t2.qtdeFrequencia,
        t2.qtdePontosPos,
